@@ -8,11 +8,13 @@ const State = (props) => {
     //  console.log("button was clicked");
      let upperText = text.toUpperCase();
      setText(upperText)
+     props.showAlert("Converted to UpperCase" , "success")
   };
 
   const handleLowerCase = () => {
     let lowerText = text.toLowerCase();
     setText(lowerText)
+    props.showAlert("Converted to LowerCase" , "success")
   }
 
   const handleTextBold = () => {
@@ -23,18 +25,27 @@ const State = (props) => {
   const handleClearText = () => {
     // let newText = text;
     setText('');
+    props.showAlert("Text Cleared" , "success")
   }
   const speak = () => {
     let newText = new SpeechSynthesisUtterance();
     newText.text = text;
     window.speechSynthesis.speak(newText);
+    props.showAlert("Voice Command" , "success");
   }
 
-  const handleCopyText = (props) => {
+  const handleCopyText = () => {
     var text = document.getElementById("textArea");
     text.select();
     navigator.clipboard.writeText(text.value);
+    props.showAlert("Text Copied to Clipboard" , "success");
   }
+  
+  const handleExtraSpaces = () => {
+    let newText = text.split(/ [ ]+/);
+    setText(newText.join(" "));
+    props.showAlert("Extra Spaces Removed" , "success");
+  };
 
 
 
@@ -65,7 +76,7 @@ const State = (props) => {
           className="form-control"
           value={text}
           placeholder="Enter Text Here..."
-          id="myBox"
+          id="textArea"
           rows="8"
           onChange={handleOnChange}
         ></textarea>
@@ -77,6 +88,8 @@ const State = (props) => {
 
      <button className="btn btn-primary mx-1" onClick={handleClearText}>Clear Text</button>
      <button className="btn btn-primary mx-1" onClick={handleCopyText}>Copy Text</button>
+     <button className="btn btn-primary mx-1" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
+
    
     </div>
     <div className="container my-3" style={{color: props.mode ==='dark'?'white': 'black'}}>
