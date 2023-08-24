@@ -1,48 +1,68 @@
 import { useState } from "react";
-import State from "./Components/State";
+import Textform from "./Components/Textform";
 import "./App.css";
 import About from "./Components/About";
 import Navbar from "./Components/Navbar";
 import Alert from "./Components/Alert";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState("light");
   const [alert, setAlert] = useState(null);
 
-  const showAlert = (message , type)=> {
+  const showAlert = (message, type) => {
     setAlert({
       msg: message,
-      type: type
-    })
+      type: type,
+    });
     setTimeout(() => {
-      setAlert(null)
+      setAlert(null);
     }, 1500);
-  }
+  };
 
   const toggleMode = () => {
-    if(mode === 'dark'){
-      setMode('light');
-      document.body.style.backgroundColor = 'white';
-      showAlert("Light Mode has been Enabled" , "success");
-    }else{
-      setMode('dark');
-      document.body.style.backgroundColor = '#272829';
-      showAlert("Dark Mode has been Enabled" , "success");
+    if (mode === "dark") {
+      setMode("light");
+      document.body.style.backgroundColor = "white";
+      showAlert("Light Mode has been Enabled", "success");
+      document.title = "TextUtils - Light Mode";
+      // Below time interval is for changing title constantly
+      // setInterval(() => {
+      //   document.title = 'TextUtils Is Amazing';
+      // }, 3000);
+      // setInterval(() => {
+      //   document.title = 'Install TextUtils Now';
+      // }, 2000);
+    } else {
+      setMode("dark");
+      document.body.style.backgroundColor = "#272829";
+      showAlert("Dark Mode has been Enabled", "success");
+      document.title = "TextUtils - Dark Mode";
     }
-  }
+  };
 
   return (
     <>
-      <Navbar mode={mode} toggleMode={toggleMode} />
-      <Alert alert={alert}/>
-      <div className="body">
-        <div className="container my-5" >
-          <State mode={mode} heading="Enter the text to analyze" showAlert={showAlert} />
+      <Router>
+        <Navbar mode={mode} toggleMode={toggleMode} />
+        <Alert alert={alert} />
+        <div className="body">
+          <Routes>
+            <Route exact path="/about" element={<About mode={mode}/>}></Route>
+
+            <Route
+             exact path="/"
+              element={
+                <Textform
+                 mode={mode}
+                  heading="Try TextUtils - Word Counter, Character Counter, Remove Extra Spaces"
+                  showAlert={showAlert}
+                />
+              }
+            ></Route>
+          </Routes>
         </div>
-        <div className="container my-3">
-          <About />
-        </div>
-      </div>
+      </Router>
     </>
   );
 }
