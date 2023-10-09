@@ -59,10 +59,7 @@ const Textform = (props) => {
 
         <div className="mb-3 my-3">
           <textarea
-            style={{
-              backgroundColor: props.mode === "dark" ? "#D8D9DA" : "white",
-              color: props.mode === "dark" ? "black" : "black",
-            }}
+            
             className="form-control"
             value={text}
             placeholder="Enter Text Here..."
